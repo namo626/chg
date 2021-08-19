@@ -58,7 +58,7 @@ PROGRAM netcdf2bin
   status = nf90_inquire_dimension(ncid, nodeID, len=node)
   PRINT *, 'Number of nodes = ', node
 
-  ALLOCATE (eta1(node), eta2(node), U(node), V(node), nodecode(node), test(node))
+  ALLOCATE (eta1(node), eta2(node), U(node), V(node), nodecode(node))
   CALL getNetcdfArrayReal(ncid, 'zeta1', node, eta1)
   CALL getNetcdfArrayReal(ncid, 'zeta2', node, eta2)
   CALL getNetcdfArrayReal(ncid, 'u-vel', node, U)
