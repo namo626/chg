@@ -24,10 +24,14 @@ PROGRAM netcdf2bin
      CALL EXIT(1)
   END if
 
+  PRINT *, 'Start retrieving variables...'
 
   ! Read in the integer variables
   ! Commented variables are associated with fort.81 file
-  CALL getNetcdfInt(ncid, 'imhs', imhs)
+
+  ! IM must be 0 for dgswem
+  ! CALL getNetcdfInt(ncid, 'imhs', imhs)
+  imhs = 0
   CALL getNetcdfReal(ncid, 'time', time)
   CALL getNetcdfInt(ncid, 'iths', iths)
   CALL getNetcdfInt(ncid, 'iestp', iestp)
@@ -68,6 +72,7 @@ PROGRAM netcdf2bin
   !-----------------------------------------------------------------------------------
 
   ! Write everything to a binary file
+  PRINT *, 'Writing results to file binary...'
   OPEN(unit=1, file='binary', form='unformatted', access='direct', recl=8)
 
   WRITE(1, rec=1) imhs
