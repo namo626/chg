@@ -2,20 +2,20 @@ PROGRAM netcdf2bin
 
   USE netcdf
   IMPLICIT NONE
-  include 'netcdf.inc'
 
   INTEGER i
   INTEGER ncid, status
   INTEGER node, nodeID
   INTEGER recnum
+  INTEGER nodecodeID
 
   ! Variables in the hotstart file
-  REAL, ALLOCATABLE :: eta1(:), eta2(:), U(:), V(:)
+  REAL(8), ALLOCATABLE :: eta1(:), eta2(:), U(:), V(:)
   INTEGER, ALLOCATABLE :: nodecode(:)
   INTEGER IMHS, ITHS, IESTP, NSCOUE, IVSTP, NSCOUV, ICSTP, NSCOUC, IPSTP
   INTEGER IWSTP, NSCOUM, IGEP, NSCOUGE, IGVP, NSCOUGV
   INTEGER IGCP, NSCOUGC, IGPP, IGWP, NSCOUGW
-  REAL time
+  REAL*8 time
 
 
   status = nf90_open(path = "fort.68.nc", mode = nf90_nowrite, ncid = ncid)
@@ -33,9 +33,12 @@ PROGRAM netcdf2bin
   ! CALL getNetcdfInt(ncid, 'imhs', imhs)
   imhs = 0
   CALL getNetcdfReal(ncid, 'time', time)
+  PRINT *, 'Time = ', time
   CALL getNetcdfInt(ncid, 'iths', iths)
+  PRINT *, 'ITHS = ', iths
   CALL getNetcdfInt(ncid, 'iestp', iestp)
   CALL getNetcdfInt(ncid, 'nscoue', nscoue)
+  PRINT *, 'NSCOUE = ', nscoue
   CALL getNetcdfInt(ncid, 'ivstp', ivstp)
   CALL getNetcdfInt(ncid, 'nscouv', nscouv)
   ! CALL getNetcdfInt(ncid, 'icstp', icstp)
@@ -56,24 +59,33 @@ PROGRAM netcdf2bin
   CALL getNetcdfInt(ncid, 'igpp', igpp)
   CALL getNetcdfInt(ncid, 'igwp', igwp)
   CALL getNetcdfInt(ncid, 'nscougw', nscougw)
+  PRINT *, 'NSCOUGW = ', nscougw
 
   ! Get number of nodes and allocate the arrays
   status = nf90_inq_dimid(ncid, 'node', nodeID)
   status = nf90_inquire_dimension(ncid, nodeID, len=node)
   PRINT *, 'Number of nodes = ', node
 
-  ALLOCATE (eta1(node), eta2(node), U(node), V(node), nodecode(node))
+  ALLOCATE (eta1(node), eta2(node), U(node), V(node))
+  allocate (nodecode(node))
+
   CALL getNetcdfArrayReal(ncid, 'zeta1', node, eta1)
-  CALL getNetcdfArrayReal(ncid, 'zeta2', node, eta2)
+  PRINT *, 'Finished retrieving first array'
+  call getNetcdfArrayReal(ncid, 'zeta2', node, eta2)
+  PRINT *, 'Finished retrieving second array'
   CALL getNetcdfArrayReal(ncid, 'u-vel', node, U)
+  PRINT *, 'Finished retrieving third array'
   CALL getNetcdfArrayReal(ncid, 'v-vel', node, V)
-  CALL getNetcdfArrayInt(ncid, 'nodecode', node, nodecode)
+  PRINT *, 'Finished retrieving fourth array'
+  CALL getNetcdfArrayReal(ncid, 'nodecode', node, nodecode)
+  PRINT *, 'Finished retrieving fifth array'
+
 
   !-----------------------------------------------------------------------------------
 
   ! Write everything to a binary file
   PRINT *, 'Writing results to file binary...'
-  OPEN(unit=1, file='binary', form='unformatted', access='direct', recl=8)
+  OPEN(unit=1, file='fort.68',  access='direct', recl=8)
 
   WRITE(1, rec=1) imhs
   WRITE(1, rec=2) time
