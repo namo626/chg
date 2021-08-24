@@ -3,7 +3,7 @@ PROGRAM test
   implicit none
 
   integer ihot, ihotstp, imhsf, iths
-  real timehsf
+  real(8) timehsf
   ihot = 68
 
   OPEN(IHOT,FILE='fort.68',ACCESS='DIRECT',RECL=8)

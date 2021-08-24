@@ -15,7 +15,7 @@ PROGRAM netcdf2bin
   INTEGER IMHS, ITHS, IESTP, NSCOUE, IVSTP, NSCOUV, ICSTP, NSCOUC, IPSTP
   INTEGER IWSTP, NSCOUM, IGEP, NSCOUGE, IGVP, NSCOUGV
   INTEGER IGCP, NSCOUGC, IGPP, IGWP, NSCOUGW
-  REAL*8 time
+  REAL(8) time
 
 
   status = nf90_open(path = "fort.68.nc", mode = nf90_nowrite, ncid = ncid)
@@ -77,7 +77,7 @@ PROGRAM netcdf2bin
   PRINT *, 'Finished retrieving third array'
   CALL getNetcdfArrayReal(ncid, 'v-vel', node, V)
   PRINT *, 'Finished retrieving fourth array'
-  CALL getNetcdfArrayReal(ncid, 'nodecode', node, nodecode)
+  CALL getNetcdfArrayInt(ncid, 'nodecode', node, nodecode)
   PRINT *, 'Finished retrieving fifth array'
 
 
@@ -175,7 +175,7 @@ SUBROUTINE getNetcdfReal(ncid, name, val)
   IMPLICIT NONE
   INTEGER ncid, status, id
   CHARACTER (len = *), INTENT(in) :: name
-  REAL, INTENT(out) :: val
+  REAL(8), INTENT(out) :: val
 
   status = nf90_inq_varid(ncid, name, id)
   if (status /= nf90_noerr) THEN
@@ -197,7 +197,7 @@ SUBROUTINE getNetcdfArrayReal(ncid, name, size, val)
   IMPLICIT NONE
   INTEGER ncid, status, id, size
   CHARACTER (len = *), INTENT(in) :: name
-  REAL, INTENT(out) :: val(size)
+  REAL(8), INTENT(out) :: val(size)
 
   status = nf90_inq_varid(ncid, name, id)
   if (status /= nf90_noerr) THEN
