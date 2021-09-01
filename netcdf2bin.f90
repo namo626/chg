@@ -16,6 +16,9 @@ PROGRAM netcdf2bin
   USE netcdf
   IMPLICIT NONE
 
+  CHARACTER (len=*) :: input, output
+
+
   INTEGER i
   INTEGER ncid, status
   INTEGER node, nodeID
@@ -30,8 +33,15 @@ PROGRAM netcdf2bin
   INTEGER IGCP, NSCOUGC, IGPP, IGWP, NSCOUGW
   REAL(8) time
 
+  IF (command_argument_count().ne.2) THEN
+     PRINT *, 'Error: need 2 arguments'
+     CALL EXIT(1)
+  END IF
 
-  status = nf90_open(path = "fort.68.nc", mode = nf90_nowrite, ncid = ncid)
+  CALL get_command_argument(1, input)
+  CALL get_command_argument(2, output)
+
+  status = nf90_open(path = input, mode = nf90_nowrite, ncid = ncid)
   IF (status /= nf90_noerr) THEN
      PRINT *, "Error opening hotstart file"
      CALL EXIT(1)
@@ -93,7 +103,7 @@ PROGRAM netcdf2bin
   !-----------------------------------------------------------------------------------
 
   ! Write everything to a binary file
-  OPEN(unit=1, file='fort.68',  access='direct', recl=8)
+  OPEN(unit=1, file=output,  access='direct', recl=8)
   PRINT *, 'Writing results to binary...'
   WRITE(1, rec=1) imhs
   WRITE(1, rec=2) time
