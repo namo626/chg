@@ -16,7 +16,7 @@ PROGRAM netcdf2bin
   USE netcdf
   IMPLICIT NONE
 
-  CHARACTER (len=*) :: input, output
+  CHARACTER (100) :: input, output
 
 
   INTEGER i
