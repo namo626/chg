@@ -1,4 +1,17 @@
 PROGRAM netcdf2bin
+  ! This program converts a hotstart file in NetCDF format to a binary format
+  ! that can be used by DG-SWEM. Some variables were left out or manually
+  ! defined because this program was written for a specific ADCIRC hotstart file;
+  ! you can manually call them as necessary in the appropriate record order.
+  ! This program was tested with ifort and netcdf 4.6.2. There seems to be a problem
+  ! with a newer version of netcdf.
+
+  ! COMPILE
+  ! ifort netcdf2bin.f90 -o netcdf2bin -I{NETCDF_INC} -L{NETCDF_LIB} -lnetcdf -lnetcdff
+
+  ! USAGE
+  ! netcdf2bin INPUT OUTPUT
+  ! Example: netcdf2bin fort.68.nc fort.68
 
   USE netcdf
   IMPLICIT NONE
@@ -20,16 +33,23 @@ PROGRAM netcdf2bin
 
   status = nf90_open(path = "fort.68.nc", mode = nf90_nowrite, ncid = ncid)
   IF (status /= nf90_noerr) THEN
-     PRINT *, "Error opening file"
+     PRINT *, "Error opening hotstart file"
      CALL EXIT(1)
   END if
 
+  ! Get number of nodes and allocate the arrays
+  status = nf90_inq_dimid(ncid, 'node', nodeID)
+  status = nf90_inquire_dimension(ncid, nodeID, len=node)
+  PRINT *, 'Number of nodes = ', node
+
+  ALLOCATE (eta1(node), eta2(node), U(node), V(node))
+  ALLOCATE (nodecode(node))
+
+
   PRINT *, 'Start retrieving variables...'
+  ! Add required variables as necessary
 
-  ! Read in the integer variables
-  ! Commented variables are associated with fort.81 file
-
-  ! IM must be 0 for dgswem
+  ! IM 111112 not in dgswem, so set to zero
   ! CALL getNetcdfInt(ncid, 'imhs', imhs)
   imhs = 0
   CALL getNetcdfReal(ncid, 'time', time)
@@ -61,32 +81,20 @@ PROGRAM netcdf2bin
   CALL getNetcdfInt(ncid, 'nscougw', nscougw)
   PRINT *, 'NSCOUGW = ', nscougw
 
-  ! Get number of nodes and allocate the arrays
-  status = nf90_inq_dimid(ncid, 'node', nodeID)
-  status = nf90_inquire_dimension(ncid, nodeID, len=node)
-  PRINT *, 'Number of nodes = ', node
-
-  ALLOCATE (eta1(node), eta2(node), U(node), V(node))
-  allocate (nodecode(node))
 
   CALL getNetcdfArrayReal(ncid, 'zeta1', node, eta1)
-  PRINT *, 'Finished retrieving first array'
   call getNetcdfArrayReal(ncid, 'zeta2', node, eta2)
-  PRINT *, 'Finished retrieving second array'
   CALL getNetcdfArrayReal(ncid, 'u-vel', node, U)
-  PRINT *, 'Finished retrieving third array'
   CALL getNetcdfArrayReal(ncid, 'v-vel', node, V)
-  PRINT *, 'Finished retrieving fourth array'
   CALL getNetcdfArrayInt(ncid, 'nodecode', node, nodecode)
-  PRINT *, 'Finished retrieving fifth array'
 
+  PRINT *, 'Finished retrieving netCDF variables.'
 
   !-----------------------------------------------------------------------------------
 
   ! Write everything to a binary file
-  PRINT *, 'Writing results to file binary...'
   OPEN(unit=1, file='fort.68',  access='direct', recl=8)
-
+  PRINT *, 'Writing results to binary...'
   WRITE(1, rec=1) imhs
   WRITE(1, rec=2) time
   WRITE(1, rec=3) iths
