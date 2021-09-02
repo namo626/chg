@@ -1,8 +1,9 @@
 PROGRAM netcdf2bin
   ! This program converts a hotstart file in NetCDF format to a binary format
-  ! that can be used by DG-SWEM. Some variables were left out or manually
+  ! that can be read by DG-SWEM. Some variables were left out or manually
   ! defined because this program was written for a specific ADCIRC hotstart file;
-  ! you can manually call them as necessary in the appropriate record order.
+  ! you can manually call them as necessary (e.g. by looking at ncdump) in the
+  ! appropriate record order.
   ! This program was tested with ifort and netcdf 4.6.2. There seems to be a problem
   ! with a newer version of netcdf.
 
