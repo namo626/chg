@@ -35,6 +35,8 @@ PROGRAM netcdf2adcirc
   REAL(8) time
   INTEGER inputFileFmtVn
 
+  inputFileFmtVn = 1050624
+
   IF (command_argument_count().ne.2) THEN
      PRINT *, 'Error: need 2 arguments'
      CALL EXIT(1)
