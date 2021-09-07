@@ -147,7 +147,6 @@ PROGRAM netcdf2adcirc
      WRITE(1, rec=recnum) noff(i); recnum = recnum + 1
   END DO
 
-  recnum = recnum + 1
   WRITE(1, rec=recnum) IESTP
   recnum = recnum + 1
   WRITE(1, rec=recnum) NSCOUE
