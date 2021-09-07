@@ -186,7 +186,7 @@ PROGRAM netcdf2adcirc
   CLOSE(1)
 
 
-END PROGRAM netcdf2bin
+END PROGRAM netcdf2adcirc
 
 
 
