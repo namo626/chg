@@ -27,4 +27,4 @@ dumpOutput: dumpOutput.f90
 	$(FC) $< -o $@ $(FCFLAGS)
 
 clean:
-	rm *.o $(bins)
+	rm -f *.o $(bins)

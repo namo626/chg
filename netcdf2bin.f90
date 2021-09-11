@@ -175,17 +175,7 @@ SUBROUTINE getNetcdfInt(ncid, name, val)
   CHARACTER (len = *), INTENT(in) :: name
   INTEGER, INTENT(out) :: val
 
-  status = nf90_inq_varid(ncid, name, id)
-  if (status /= nf90_noerr) THEN
-     PRINT *, "Error inquiring variable: ", name
-     CALL EXIT(1)
-  end if
-
-  status = nf90_get_var(ncid, id, val)
-  if (status /= nf90_noerr) THEN
-     PRINT *, "Error retrieving variable: ", name
-     CALL exit(1)
-  end if
+  INCLUDE 'netcdf2bin.inc'
 
 END SUBROUTINE getNetcdfInt
 
@@ -196,17 +186,7 @@ SUBROUTINE getNetcdfReal(ncid, name, val)
   CHARACTER (len = *), INTENT(in) :: name
   REAL(8), INTENT(out) :: val
 
-  status = nf90_inq_varid(ncid, name, id)
-  if (status /= nf90_noerr) THEN
-     PRINT *, "Error inquiring variable: ", name
-     CALL EXIT(1)
-  END IF
-
-  status = nf90_get_var(ncid, id, val)
-  if (status /= nf90_noerr) THEN
-     PRINT *, "Error retrieving variable: ", name
-     CALL EXIT(1)
-  END if
+  INCLUDE 'netcdf2bin.inc'
 
 END SUBROUTINE getNetcdfReal
 
@@ -218,16 +198,7 @@ SUBROUTINE getNetcdfArrayReal(ncid, name, size, val)
   CHARACTER (len = *), INTENT(in) :: name
   REAL(8), INTENT(out) :: val(size)
 
-  status = nf90_inq_varid(ncid, name, id)
-  if (status /= nf90_noerr) THEN
-     PRINT *, "Error inquiring array: ", name
-     CALL EXIT(1)
-  END if
-  status = nf90_get_var(ncid, id, val)
-  if (status /= nf90_noerr) THEN
-     PRINT *, "Error retrieving array: ", name
-     CALL EXIT(1)
-  END if
+  INCLUDE 'netcdf2bin.inc'
 
 END SUBROUTINE getNetcdfArrayReal
 
@@ -238,15 +209,6 @@ SUBROUTINE getNetcdfArrayInt(ncid, name, size, val)
   CHARACTER (len = *), INTENT(in) :: name
   INTEGER, INTENT(out) :: val(size)
 
-  status = nf90_inq_varid(ncid, name, id)
-  if (status /= nf90_noerr) THEN
-     PRINT *, "Error inquiring array: ", name
-     CALL EXIT(1)
-  END if
-  status = nf90_get_var(ncid, id, val)
-  if (status /= nf90_noerr) THEN
-     PRINT *, "Error retrieving array: ", name
-     CALL EXIT(1)
-  END if
+  INCLUDE 'netcdf2bin.inc'
 
 END SUBROUTINE getNetcdfArrayInt
