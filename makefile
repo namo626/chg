@@ -1,18 +1,24 @@
+# Default settings
+sys = thinkpad
 FC = gfortran
 FCINC = /usr/include
 FCLIB = /usr/lib
 FCFLAGS = -I$(FCINC) -L$(FCLIB) -lnetcdf -lnetcdff
+BIN = ~/.local/bin/
 
 # For different systems
-sys = thinkpad
 ifeq ($(sys),tacc)
 	FC = ifort
 	FCINC = $$TACC_NETCDF_DIR/include
 	FCLIB = $$TACC_NETCDF_DIR/lib
+	BIN = ~/bin/
 endif
 
 bins = netcdf2bin dumpOutput test
 all: $(bins)
+
+install: $(bins)
+	cp $(bins) $(BIN)
 
 netcdf2bin: netcdf2bin.o
 	$(FC) $< -o $@ $(FCFLAGS)
