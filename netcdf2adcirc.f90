@@ -99,7 +99,7 @@ PROGRAM netcdf2adcirc
 
   CALL getNetcdfArrayReal(ncid, 'zeta1', node, eta1)
   call getNetcdfArrayReal(ncid, 'zeta2', node, eta2)
-  CALL getNetcdfArrayReal(ncid, 'zetad', node, etad)
+  ! CALL getNetcdfArrayReal(ncid, 'zetad', node, etad)
   CALL getNetcdfArrayReal(ncid, 'u-vel', node, U)
   CALL getNetcdfArrayReal(ncid, 'v-vel', node, V)
   CALL getNetcdfArrayInt(ncid, 'nodecode', node, nodecode)
@@ -132,7 +132,7 @@ PROGRAM netcdf2adcirc
      WRITE(1, rec=recnum) eta2(i); recnum = recnum + 1
   END DO
   DO i = 1, node
-     WRITE(1, rec=recnum) etad(i); recnum = recnum + 1
+     WRITE(1, rec=recnum) eta2(i); recnum = recnum + 1
   END DO
   DO i = 1, node
      WRITE(1, rec=recnum) U(i); recnum = recnum + 1
