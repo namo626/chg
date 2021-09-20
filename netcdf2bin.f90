@@ -22,13 +22,13 @@ PROGRAM netcdf2bin
 
   INTEGER i
   INTEGER ncid, status
-  INTEGER node, nodeID
+  INTEGER node, nodeID, nele, neleID
   INTEGER recnum
   INTEGER nodecodeID
 
   ! Variables in the hotstart file
   REAL(8), ALLOCATABLE :: eta1(:), eta2(:), U(:), V(:)
-  INTEGER, ALLOCATABLE :: nodecode(:)
+  INTEGER, ALLOCATABLE :: nodecode(:), noff(:)
   INTEGER IMHS, ITHS, IESTP, NSCOUE, IVSTP, NSCOUV, ICSTP, NSCOUC, IPSTP
   INTEGER IWSTP, NSCOUM, IGEP, NSCOUGE, IGVP, NSCOUGV
   INTEGER IGCP, NSCOUGC, IGPP, IGWP, NSCOUGW
@@ -53,8 +53,12 @@ PROGRAM netcdf2bin
   status = nf90_inquire_dimension(ncid, nodeID, len=node)
   PRINT *, 'Number of nodes = ', node
 
+  status = nf90_inq_dimid(ncid, 'nele', neleID)
+  status = nf90_inquire_dimension(ncid, neleID, len=nele)
+  PRINT *, 'Number of elements = ', nele
+
   ALLOCATE (eta1(node), eta2(node), U(node), V(node))
-  ALLOCATE (nodecode(node))
+  ALLOCATE (nodecode(node), noff(nele))
 
 
   PRINT *, 'Start retrieving variables...'
@@ -98,6 +102,7 @@ PROGRAM netcdf2bin
   CALL getNetcdfArrayReal(ncid, 'u-vel', node, U)
   CALL getNetcdfArrayReal(ncid, 'v-vel', node, V)
   CALL getNetcdfArrayInt(ncid, 'nodecode', node, nodecode)
+  CALL getNetcdfArrayInt(ncid, 'noff', nele, noff)
 
   PRINT *, 'Finished retrieving netCDF variables.'
 
@@ -118,8 +123,9 @@ PROGRAM netcdf2bin
      WRITE(1, rec=recnum+3) U(i)
      WRITE(1, rec=recnum+4) V(i)
      WRITE(1, rec=recnum+5) nodecode(i)
+     WRITE(1, rec=recnum+6) noff(i)
 
-     recnum = recnum + 5
+     recnum = recnum + 6
   END DO
 
   recnum = recnum + 1
