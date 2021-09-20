@@ -123,9 +123,13 @@ PROGRAM netcdf2bin
      WRITE(1, rec=recnum+3) U(i)
      WRITE(1, rec=recnum+4) V(i)
      WRITE(1, rec=recnum+5) nodecode(i)
-     WRITE(1, rec=recnum+6) noff(i)
 
-     recnum = recnum + 6
+     recnum = recnum + 5
+  END DO
+
+  DO i = 1,nele
+     WRITE(1, rec=recnum+1) noff(i)
+     recnum = recnum + 1
   END DO
 
   recnum = recnum + 1
