@@ -14,6 +14,13 @@ ifeq ($(sys),tacc)
 	BIN = ~/bin/
 endif
 
+ifeq ($(sys),laura)
+  	FC = ifort
+	FCINC = /workspace/local/include
+	FCLIB = /workspace/local/lib
+	BIN = /workspace/local/bin
+endif		
+
 bins = netcdf2bin dumpOutput test
 all: $(bins)
 
