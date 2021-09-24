@@ -21,7 +21,7 @@ ifeq ($(sys),laura)
 	BIN = /workspace/local/bin
 endif		
 
-bins = netcdf2bin dumpOutput test
+bins = netcdf2bin dumpOutput test runFG51
 all: $(bins)
 
 install: $(bins)
@@ -37,6 +37,9 @@ test: test.f90
 	$(FC) $< -o $@
 
 dumpOutput: dumpOutput.f90
+	$(FC) $< -o $@ $(FCFLAGS)
+
+runFG51: FigureGen51.F90
 	$(FC) $< -o $@ $(FCFLAGS)
 
 clean:
