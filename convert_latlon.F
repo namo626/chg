@@ -22,8 +22,10 @@ c
       write(14,*)
       write(14,*) ne,np
       do i=1,np
-         write(14,*) i,slam(i)*180/pi-360,sfea(i)*180/pi,b(i)
+         !write(14,*) i,slam(i)*180/pi-360,sfea(i)*180/pi,b(i)
+         write(14,100) i, slam(i)*180/pi-360, sfea(i)*180/pi, b(i)
       enddo
+  100 format(' ', I5, 3F15.7)
       close(14)
       stop
       end
