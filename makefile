@@ -21,7 +21,8 @@ ifeq ($(sys),laura)
 	BIN = /workspace/local/bin
 endif		
 
-bins = netcdf2bin dumpOutput test runFG51
+bins = netcdf2bin dumpOutput test runFG51 runFG51par convert_latlon
+
 all: $(bins)
 
 install: $(bins)
@@ -41,6 +42,13 @@ dumpOutput: dumpOutput.f90
 
 runFG51: FigureGen51.F90
 	$(FC) $< -o $@ $(FCFLAGS)
+
+runFG51par: FigureGen51.F90
+	mpif90 $< -o $@ -DCMPI -DNETCDF -DVARFILLVAL $(FCFLAGS)
+
+convert_latlon: convert_latlon.F
+	$(FC) $< -o $@
+
 
 clean:
 	rm -f *.o $(bins)
