@@ -21,7 +21,7 @@ ifeq ($(sys),laura)
 	BIN = /workspace/local/bin
 endif		
 
-bins = netcdf2bin dumpOutput test runFG51 runFG51par convert_latlon
+bins = netcdf2bin dumpOutput test runFG51 runFG51par convert_latlon setup.sh
 
 all: $(bins)
 
