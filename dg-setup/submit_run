@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH -J IKE_old_mesh
+#SBATCH -A ADCIRC
+#SBATCH -o run.out
+#SBATCH -e run.err
+#SBATCH -p normal
+#SBATCH -N 12
+#SBATCH -n 1024
+#SBATCH -t 00:05:00
+#SBATCH --mail-user=namo26june@gmail.com
+#SBATCH --mail-type=begin        # email me when the job starts
+#SBATCH --mail-type=end          # email me when the job finishes
+date>run.timing
+ibrun ./dgswem
+date>>run.timing
