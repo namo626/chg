@@ -32,7 +32,6 @@ def main():
     arr14 = load14(fort14)
     write13(fort13, arr14)
 
-main()
 
 #############################################################
 # Functions
@@ -123,3 +122,6 @@ def count_diff():
 
 
     return count
+
+
+main()
