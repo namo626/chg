@@ -21,15 +21,18 @@ xmax = -93.
 ymin = 29.
 ymax = 30.
 
-if len(sys.argv) != 3:
-    print("ERROR: please provide fort.13 and fort.14 file names")
-    quit()
+def main():
+    if len(sys.argv) != 3:
+        print("ERROR: please provide fort.13 and fort.14 file names")
+        quit()
 
-fort13 = sys.argv[1]
-fort14 = sys.argv[2]
+    fort13 = sys.argv[1]
+    fort14 = sys.argv[2]
 
-arr14 = load14(fort14)
-write13(fort13, arr14)
+    arr14 = load14(fort14)
+    write13(fort13, arr14)
+
+main()
 
 #############################################################
 # Functions
