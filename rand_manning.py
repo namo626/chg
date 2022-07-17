@@ -1,6 +1,14 @@
 import numpy as np
 import sys
 import random
+import argparse
+
+parser = argparse.ArgumentParser(description="Create a copy of fort.13 with modified Manning's N")
+parser.add_argument("fort13", help="Name of fort.13 file")
+parser.add_argument("fort14", help="Name of fort.14 file")
+parser.add_argument("--halve", help="Halve all Manning's N values", action="store_true")
+parser.add_argument("--whole", help="Set domain of change to global", action="store_true")
+args = parser.parse_args()
 
 """rand_manning.py
 
@@ -21,13 +29,17 @@ xmax = -93.
 ymin = 29.
 ymax = 30.
 
-def main():
-    if len(sys.argv) != 3:
-        print("ERROR: please provide fort.13 and fort.14 file names")
-        quit()
+# Galveston bay
+xmin = -96.
+xmax = -94.25
+ymin = 29.
+ymax = 30.
 
-    fort13 = sys.argv[1]
-    fort14 = sys.argv[2]
+def main():
+    #fort13 = sys.argv[1]
+    #fort14 = sys.argv[2]
+    fort13 = args.fort13
+    fort14 = args.fort14
 
     arr14 = load14(fort14)
     write13(fort13, arr14)
@@ -55,6 +67,8 @@ def check_node(node, arr):
     y = arr[node-1, 1]
     if (x <= xmax and x >= xmin) and (y <= ymax and y >= ymin):
         return True
+    if args.whole:
+        return True 
     return False
 
 # Load and copy fort.13 with edited section
@@ -78,18 +92,23 @@ def write13(fort13, arr14):
         mannings_node = int(l.split()[0])
         f2.write(l)
 
-        print("Randomizing manning's n...")
+        print("Modifying manning's n...")
 
         rand_count = 0
         for i in range(mannings_node):
             line = f1.readline()
             lines = line.split()
 
-            # if node in box, randomize the friction
+            # if node in box, randomize/modify the friction
             node = int(lines[0])
+            node_man = float(lines[1])
             if check_node(node, arr14):
-                rand_n = random.uniform(0.02, 0.2)
-                f2.write("%d %.6f\n" % (node, rand_n))
+                if arg.halve:
+                    new_man = node_man / 2.0
+                else:
+                    new_man = random.uniform(0.02, 0.2)
+
+                f2.write("%d %.6f\n" % (node, new_man))
                 rand_count += 1
 
             else:
