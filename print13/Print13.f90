@@ -203,7 +203,9 @@ END PROGRAM MAIN
                 call inp_ele(nvpn(i), n, list_ehasn(2,n) )
               case(0)
                 do j = 1, nvpn(i)
-                  valpt(j,n) = -99999.00
+                  ! valpt(j,n) = -99999.00
+                  ! namo - set to a constant value
+                  valpt(j,n) = 0.08
                 enddo
             end select
           enddo
@@ -250,7 +252,7 @@ END PROGRAM MAIN
           nprop(1:npt) = 0
           NPT_loop:do n = 1, npt
             do j = 1, nvpn(i)
-              if( dabs(valpt(j,n)-defval(j,i)) > 1.0d-5 ) then
+              if( dabs(valpt(j,n)-defval(j,i)) > 1.0d-5 .and. valpt(j,n) > -99999.0 ) then
                 nprop(n) = 1
                 exit
               endif
